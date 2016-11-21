@@ -1,0 +1,16 @@
+{{ partial "header" . }}
+
+<div class="incidents">
+{{ range (.Paginate .Data.Pages.ByPublishDate 15 ).Pages }}
+<div class="incident-summary">
+  <a href="{{ .Permalink }}" class="article article-title">
+    {{ .Title }}
+  </a>
+  <span class="article-date">
+    {{ dateFormat "02 Jan 2006 15:04 -0700 MST" .Date }}
+  </span>
+</div>
+{{ end }}
+
+{{ partial "paginator" . }}
+</div>

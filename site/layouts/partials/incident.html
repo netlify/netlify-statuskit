@@ -1,0 +1,14 @@
+<div class="incident card">
+  <div class="incident-header">
+    <p class="incident-title">{{ .Title }}</p>
+    <p class="incident-date">{{ dateFormat "02 Jan 2006 15:04 -0700 MST" .Date }}</p>
+  </div>
+  <div class="incident-description">
+    {{- .Content -}}
+  </div>
+  {{- $alert := index .Site.Data.states.alerts .Params.state -}}
+
+  <p class="incident-status color-{{ $alert }}">
+    {{ index .Site.Data.states.descriptions .Params.state }}
+  </p>
+</div>

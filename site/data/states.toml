@@ -1,0 +1,13 @@
+[descriptions]
+  ok = "Up and running"
+  under-maintenance = "Under maintenance"
+  degraded-performance = "Degraded performance"
+  partial-outage = "Partial outage"
+  major-outage = "Major outage"
+
+[alerts]
+  ok = "ok"
+  under-maintenance = "warning"
+  degraded-performance = "warning"
+  partial-outage = "warning"
+  major-outage = "danger"

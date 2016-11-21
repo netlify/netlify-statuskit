@@ -1,0 +1,37 @@
+<!doctype html>
+{{ $logo := getenv "STATUSKIT_COMPANY_LOGO" | default .Site.Params.defaultLogo }}
+{{ $title := getenv "STATUSKIT_PAGE_TITLE" | default .Site.Title }}
+{{ $resources := getenv "STATUSKIT_RESOURCES_LINK" | default .Site.Params.resourcesLink }}
+{{ $contact := getenv "STATUSKIT_SUPPORT_CONTACT_LINK" | default .Site.Params.contactLink }}
+{{ $favicons := getenv "STATUSKIT_FAVICONS_PATH" | default .Site.Params.faviconsPath }}
+
+{{ $incidents := where .Site.Pages.ByDate.Reverse "Section" "incidents" }}
+{{ $active := where $incidents "Params.resolved" "!=" true }}
+{{ $major := where $active "Params.state" "major-outage" }}
+
+<html>
+  <head>
+    <title>{{ $title }}</title>
+    <link rel="stylesheet" href="/css/main.css"/>
+    {{ if $major }}
+      <link rel="icon" href="{{ absURL $favicons }}favicon-danger.ico">
+    {{ else if $active }}
+      <link rel="icon" href="{{ absURL $favicons }}favicon-warning.ico">
+    {{ else }}
+      <link rel="icon" href="{{ absURL $favicons }}favicon-ok.ico">
+    {{ end }}
+  </head>
+  <body>
+    <div class="gangsta-wrap">
+      <div class="header">
+        <img src="{{ $logo }}" class="logo"/>
+        <span class="title"><a href="/">{{ $title }}</a></span>
+        <div class="right-links">
+          {{ with $resources }}
+            <a href="{{ . }}" class="button resources-link">Resources</a>
+          {{ end }}
+          {{ with $contact }}
+            <a href="{{ . }}" class="button contact-link">Contact</a>
+          {{ end }}
+        </div>
+      </div>

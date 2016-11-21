@@ -1,0 +1,31 @@
+{{ partial "header" . }}
+
+{{ $incidents := where .Site.Pages.ByDate.Reverse "Section" "incidents" }}
+{{ $active := where $incidents "Params.resolved" "!=" true }}
+
+{{ partial "systems" (dict "content" . "incidents" $active) }}
+
+{{ with $active }}
+  <div class="section-title">Active Incidents</div>
+  {{ range $active }}
+    {{ partial "incident" . }}
+  {{ end }}
+{{ else }}
+  {{ $latest := index $incidents 0 }}
+  {{ partial "all-clear" $latest }}
+{{ end }}
+
+{{ $recents := first 3 (where $incidents "Params.resolved" "==" true) }}
+{{ with $recents }}
+<div class="history">
+  <div class="section-title">Past Incidents</div>
+  {{ range $recents }}
+    {{ partial "incident" . }}
+  {{ end }}
+  <a href="/incidents" class="see-more">See all incidents</a>
+</div>
+{{ end }}
+
+{{ partial "footer" . }}
+
+<script src="/app.js"></script>

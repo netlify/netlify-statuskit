@@ -1,0 +1,29 @@
+{{ $okAlert := index .content.Site.Data.states.alerts "ok"}}
+{{ $okDesc := index .content.Site.Data.states.descriptions "ok" }}
+
+{{ with .content.Site.Params.systems }}
+<div class="systems">
+  {{ range . }}
+  {{ $name := . }}
+  <div class="system-operational">
+    <div class="card">
+      {{ $name }}
+
+      {{ if $.incidents }}
+        {{ range $.incidents }}
+          {{ if in .Params.affectedsystems $name }}
+            {{ $alert := index .Site.Data.states.alerts .Params.state }}
+            {{ $desc := index .Site.Data.states.descriptions .Params.state  }}
+            {{ partial "status-badge" (dict "alert" $alert "description" $desc) }}
+          {{ else }}
+            {{ partial "status-badge" (dict "alert" $okAlert "description" $okDesc) }}
+          {{ end }}
+        {{ end }}
+      {{ else }}
+        {{ partial "status-badge" (dict "alert" $okAlert "description" $okDesc) }}
+      {{ end }}
+    </div>
+  </div>
+  {{ end }}
+</div>
+{{ end }}
