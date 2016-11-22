@@ -1,7 +1,7 @@
 <div class="system-check-ok">
   <img src="/images/icon-large-ok.svg" />
   {{ with .Date }}
-    {{ $latestDate := dateFormat "2006-01-02T15:04:05" .Date}}
+    {{ $latestDate := dateFormat "2006-01-02T15:04:05" .}}
     <p id="days-since-latest" data-latest-incident-date="{{ $latestDate }}">48+ days since last incident</p>
   {{ else }}
     <p>No incidents so far, all is good</p>
