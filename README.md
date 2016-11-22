@@ -33,7 +33,11 @@ Go to `site/config.toml` and change the global `systems` variables. Once that's 
 This template is based in [Netlify's Victor-Hugo](https://github.com/netlify/victor-hugo) boilerplate.
 To work on it you'll need NPM installed. To download dependencies type `npm run dependencies`, that will check if you have Hugo installed and will download it for you if you don't. It will also run `npm install` for the first time to download extra dependencies. After that, you can run `npm install` every time you want to install packages.
 
-## Creating incidents
+## Managing incidents
+
+Incidents are plain markdown files inside the `site/content/incidents` directory.
+
+### Creating new incidents
 
 Adding incidents to your status page is as simple as adding a new document to the incidents collection.
 Create a new incident using Hugo with a command like this:
@@ -46,9 +50,27 @@ Hugo will create a new Markdown file for you with title and date based on the fi
 
 After explaining the current situation in the incident, you can just push the file to GitHub. Netlify will deploy the indicent announcement for you in a matter of seconds.
 
-## Resolving incidents
+### Resolving incidents
 
-Everything will be operational again when all incidents are marked with `resolved = true`.
+Everything will be operational again when all incidents are marked with `resolved = true` in the incident frontMatter:
+
+```toml
++++
+...
+affectedsystems = ["API"]
+resolved = true
++++
+```
+
+
+### Tracking activity
+
+When there is an update in your incident you can track activity by inserting a timestamp with the update. For example:
+
+```md
+**Update**: We've identified the issue. {{< track "2016-11-22T14:34:00.000Z" >}}
+```
+
 
 # Development
 
