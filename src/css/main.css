@@ -109,7 +109,8 @@ a:active {
   padding: 16px;
   border-radius: 10px;
   background: #fff;
-  box-shadow: 0px 8px 20px 0px rgba(19, 39, 48, .08);
+  box-shadow: 0px 4px 8px 0px rgba(0,0,0,.05);
+  border: 1px solid #fbfbfb;
 
   font-size: 16px;
   font-weight: 500;
@@ -118,11 +119,12 @@ a:active {
 
 .system-operational {
   flex-grow: 1;
-  margin-right: 16px;
+  margin-left: 8px;
+  margin-right: 8px;
 }
 
 .system-operational:last-child {
-  margin-right: 0;
+  max-width: 50%;
 }
 
 .system-status-badge {
@@ -172,7 +174,7 @@ a:active {
   max-width: 300px;
   text-align: center;
   font-weight: 500;
-  color: #009A8D; /*Switch to appropriate color*/
+  color: #009A8D;
 }
 
 .system-check-ok img {
