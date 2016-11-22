@@ -17,7 +17,6 @@ a:active {
   text-decoration: underline;
 }
 
-
 .gangsta-wrap {
   max-width: 800px;
   margin: auto;
@@ -274,17 +273,23 @@ a:active {
   border-top: 2px solid #F7F7F8;
 }
 
-.footer a {
-  display: inline-block;
+.footer p {
   width: 100%;
   font-size: 14px;
+  text-align: left;
+}
+
+.footer a {
   color: #202020;
   opacity: 0.3;
   transition: all 0.3s ease;
-  text-align: left;
 }
 
 .footer a:hover {
   color: #3A71B0;
   opacity: 1;
+}
+
+.footer p {
+  display: inline-block;
 }
