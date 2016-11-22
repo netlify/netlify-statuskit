@@ -8,6 +8,6 @@ if (daysSince) {
   const timeSince = new Date() - new Date(dateSince);
   const endDays = Math.floor(timeSince / aDay);
 
-  console.log(endDays);
-  daysSince.innerHTML = `${endDays} days since last incident`
+  const count = endDays == 1 ? `${endDays} day` : `${endDays} days`;
+  daysSince.innerHTML = `${count} since last incident`;
 }
