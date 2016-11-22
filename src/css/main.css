@@ -123,6 +123,7 @@ a:active {
 
 .system-operational:last-child {
   margin-right: 0;
+  max-width: 50%;
 }
 
 .system-status-badge {
@@ -172,7 +173,7 @@ a:active {
   max-width: 300px;
   text-align: center;
   font-weight: 500;
-  color: #009A8D; /*Switch to appropriate color*/
+  color: #009A8D;
 }
 
 .system-check-ok img {
