@@ -1,5 +1,5 @@
-{{ $okAlert := index .content.Site.Data.states.alerts "ok"}}
-{{ $okDesc := index .content.Site.Data.states.descriptions "ok" }}
+{{ $okAlert := index .content.Site.Data.severity.alerts "ok"}}
+{{ $okDesc := index .content.Site.Data.severity.descriptions "ok" }}
 
 {{ with .content.Site.Params.systems }}
 <div class="systems">
@@ -12,8 +12,8 @@
       {{ if $.incidents }}
         {{ range $.incidents }}
           {{ if in .Params.affectedsystems $name }}
-            {{ $alert := index .Site.Data.states.alerts .Params.state }}
-            {{ $desc := index .Site.Data.states.descriptions .Params.state  }}
+            {{ $alert := index .Site.Data.severity.alerts .Params.severity }}
+            {{ $desc := index .Site.Data.severity.descriptions .Params.severity  }}
             {{ partial "status-badge" (dict "alert" $alert "description" $desc) }}
           {{ else }}
             {{ partial "status-badge" (dict "alert" $okAlert "description" $okDesc) }}

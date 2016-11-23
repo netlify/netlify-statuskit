@@ -6,9 +6,9 @@
   <div class="incident-description">
     {{- .Content -}}
   </div>
-  {{- $alert := index .Site.Data.states.alerts .Params.state -}}
+  {{- $alert := index .Site.Data.severity.alerts .Params.severity -}}
 
   <p class="incident-status color-{{ $alert }}">
-    {{ index .Site.Data.states.descriptions .Params.state }}
+    {{ index .Site.Data.severity.descriptions .Params.severity }}
   </p>
 </div>

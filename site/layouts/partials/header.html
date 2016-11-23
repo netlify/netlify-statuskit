@@ -7,7 +7,7 @@
 
 {{ $incidents := where .Site.Pages.ByDate.Reverse "Section" "incidents" }}
 {{ $active := where $incidents "Params.resolved" "!=" true }}
-{{ $major := where $active "Params.state" "major-outage" }}
+{{ $major := where $active "Params.severity" "major-outage" }}
 
 <html>
   <head>
