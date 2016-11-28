@@ -16,7 +16,6 @@ Before creating the site, Netlify will ask you to fill required environment vari
 - `STATUSKIT_COMPANY_LOGO` - URL to your company's logo.
 - `STATUSKIT_SUPPORT_CONTACT_LINK` - URL to a support page for your users to talk with you.
 - `STATUSKIT_RESOURCES_LINK` - URL to documentation for your users.
-- `STATUSKIT_FAVICONS_PATH` - Path where the favicons for different statuses are. By default, we use `/images/favicon/favicon-ok.ico` when there are no incidents, `/images/favicon/favicon-warning.ico` when there are no major incidents, and `/images/favicon/favicon-danger.ico` when there are major incidents. This path can be an external URL, like `https://my-favourite-cdn/images/status-favicons`. The names for the different statuses must be `favicon-ok.ico`, `favicon-warning.ico` and `favicon-danger.ico`.
 
 ## Extra configuration
 

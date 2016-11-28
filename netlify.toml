@@ -10,4 +10,3 @@
   STATUSKIT_COMPANY_LOGO = "url to your company's logo"
   STATUSKIT_SUPPORT_CONTACT_LINK = "url to your support page"
   STATUSKIT_RESOURCES_LINK = "url to your knowledge base page"
-  STATUSKIT_FAVICONS_PATH = "/images/favicons/"

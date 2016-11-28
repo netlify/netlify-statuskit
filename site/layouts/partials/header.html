@@ -3,7 +3,6 @@
 {{ $title := getenv "STATUSKIT_PAGE_TITLE" | default .Site.Title }}
 {{ $resources := getenv "STATUSKIT_RESOURCES_LINK" | default .Site.Params.resourcesLink }}
 {{ $contact := getenv "STATUSKIT_SUPPORT_CONTACT_LINK" | default .Site.Params.contactLink }}
-{{ $favicons := getenv "STATUSKIT_FAVICONS_PATH" | default .Site.Params.faviconsPath }}
 
 {{ $incidents := where .Site.Pages.ByDate.Reverse "Section" "incidents" }}
 {{ $active := where $incidents "Params.resolved" "!=" true }}
