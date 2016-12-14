@@ -5,12 +5,10 @@ please read the [code of conduct](CODE_OF_CONDUCT.md).
 
 ## Setup
 
-> Install yarn on your system: https://yarnpkg.com/en/docs/install
-
 ```sh
 $ git clone https://github.com/netlify/netlify-statuskit
 $ cd netlify-statuskit
-$ yarn
+$ npm install
 ```
 
 ## Building
