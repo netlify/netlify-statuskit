@@ -16,12 +16,12 @@
 #
 severity = "degraded-performance"
 
-# affectedsystem: is a list of systems affected
+# affectedsystems: is a list of systems affected
 # by the incident.
 # Example:
-# affectedsytems = ["API", "Build servers"]
+# affectedsystems = ["API", "Build servers"]
 #
-affectedsytems = ["API", "Build servers"]
+affectedsystems = ["API", "Build servers"]
 
 # resolved: marks an incident as resolved.
 # It can be either true or false.
