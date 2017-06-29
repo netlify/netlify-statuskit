@@ -1,9 +1,8 @@
 +++
 # default attributes for an incident.
 #
-# Hugo adds `title` and `date` by default
-# when running `hugo new incidents/new-incident.md`,
-# so we don't have to specify them here.
+title = "{{ replace .TranslationBaseName "-" " " | title }}"
+date = {{ .Date }}
 
 # severity: represents the impact of 
 # your system due to the current incident.
