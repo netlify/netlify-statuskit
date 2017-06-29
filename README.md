@@ -41,7 +41,7 @@ Incidents are plain markdown files inside the `site/content/incidents` directory
 ### Creating new incidents
 
 Adding incidents to your status page is as simple as adding a new document to the incidents collection.
-Create a new incident using Hugo with a command like this:
+Create a new incident using Hugo with a command like this as of Hugo v0.24:
 
 ```
 cd site
