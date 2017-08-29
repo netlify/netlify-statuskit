@@ -6,9 +6,10 @@
   <div class="incident-description">
     {{- .Content -}}
   </div>
-  {{- $alert := index .Site.Data.severity.alerts .Params.severity -}}
+  {{- $severity := .Params.severity  | default "under-maintenance" -}}
+  {{- $alert := index .Site.Data.severity.alerts $severity -}}
 
   <p class="incident-status color-{{ $alert }}">
-    {{ index .Site.Data.severity.descriptions .Params.severity }}
+    {{ index .Site.Data.severity.descriptions $severity }}
   </p>
 </div>
