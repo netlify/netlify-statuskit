@@ -147,10 +147,18 @@ a:active {
   text-transform: capitalize;
 }
 
-.incident-date {
+.pull-right {
   float: right;
+}
+
+.incident-date {
   font-size: 14px;
   opacity: 0.3;
+}
+
+.affected-systems {
+  font-size: 14px;
+  opacity: 0.7;
 }
 
 @media (max-width: 450px) {
