@@ -1,15 +1,18 @@
+{{- $severity := .Params.severity  | default "under-maintenance" -}}
+{{- $alert := index .Site.Data.severity.alerts $severity -}}
 <div class="incident card">
   <div class="incident-header">
     <p class="incident-title">{{ .Title }}</p>
-    <p class="incident-date">{{ dateFormat "02 Jan 2006 15:04 MST" .Date }}</p>
+    <div class="pull-right">
+      <p class="affected-systems">Affected Systems: <span class="incident-status color-{{ $alert }}">{{ delimit .Params.affectedsystems ", " }}</span>
+      </p>
+      <p class=incident-date>{{- dateFormat "02 Jan 2006 15:04 MST" .Date -}}</p>
+    </div>
   </div>
   <div class="incident-description">
     {{- .Content -}}
   </div>
-  {{- $severity := .Params.severity  | default "under-maintenance" -}}
-  {{- $alert := index .Site.Data.severity.alerts $severity -}}
-
   <p class="incident-status color-{{ $alert }}">
-    {{ index .Site.Data.severity.descriptions $severity }}
+    {{- index .Site.Data.severity.descriptions $severity -}}
   </p>
 </div>
