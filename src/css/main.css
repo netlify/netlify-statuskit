@@ -28,6 +28,9 @@ a:active {
   margin-bottom: 40px;
   padding: 16px 0 24px 0;
   border-bottom: 2px solid #F7F7F8;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 .logo {
@@ -52,18 +55,14 @@ a:active {
   text-decoration: none;
 }
 
-.right-links {
-  float: right;
-}
-
 @media (max-width: 450px) {
   .right-links {
-    float: left;
     margin-top: 24px;
   }
 
   .header {
     padding-bottom: 68px;
+    flex-direction: column;
   }
 }
 
@@ -109,8 +108,8 @@ a:active {
   padding: 16px;
   border-radius: 10px;
   background: #fff;
-  box-shadow: 0px 4px 8px 0px rgba(0,0,0,.05);
-  border: 1px solid #fbfbfb;
+  box-shadow: 0px 4px 8px 0px rgba(0,0,0,.1);
+  border: 1px solid #eaeaea;
 
   font-size: 16px;
   font-weight: 500;
@@ -138,31 +137,25 @@ a:active {
   height: 16px;
 }
 
+.incident h1 {
+  font-size: 1.5em;
+  margin-top: 0;
+}
+
 .incident {
   color: #202020;
 }
 
 .incident-title {
-  float: left;
   text-transform: capitalize;
+  width: 75%;
 }
 
-.pull-right {
-  float: right;
-}
-
-.incident-date {
-  font-size: 14px;
-  opacity: 0.3;
-}
-
-.affected-systems {
-  font-size: 14px;
-  opacity: 0.7;
-}
-
-@media (max-width: 450px) {
+@media (max-width: 725px) {
   .incident-date {
+    width: 100%;
+  }
+  .incident-title {
     width: 100%;
   }
 }
@@ -172,8 +165,23 @@ a:active {
   font-weight: 400;
 }
 
+.separate {
+  text-align: right;
+  padding-bottom: 1em;
+  border-bottom: 2px solid #F7F7F8;
+}
+
 .incident-status {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
   margin: 24px 0 0 0;
+}
+
+.flex-out {
+  display: flex;
+  flex-direciton: row;
+  justify-content: space-between;
 }
 
 .system-check-ok {
@@ -198,7 +206,6 @@ a:active {
   font-size: 16px;
   font-weight: 500;
   border-bottom: 2px solid #F7F7F8;
-  color: #bbb;
 }
 
 .see-more {
@@ -229,6 +236,11 @@ a:active {
 .mute {
   opacity: 0.7;
 }
+
+.small {
+  font-size: 14px;
+}
+
 .incident-summary {
   margin-bottom: 24px;
   overflow: hidden;
@@ -236,13 +248,11 @@ a:active {
 
 .article-title {
   width: 70%;
-  float: left;
   text-transform: capitalize;
 }
 
 .article-date {
   width: 29%;
-  float: right;
   text-align: right;
   font-size: 14px;
 }
