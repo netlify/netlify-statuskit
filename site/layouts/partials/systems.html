@@ -7,8 +7,7 @@
   {{ $name := . }}
   <div class="system-operational">
     <div class="card">
-      {{ $name }}
-
+      {{- $name -}}
       {{ if $.incidents }}
         {{ range $.incidents }}
           {{ if in .Params.affectedsystems $name }}

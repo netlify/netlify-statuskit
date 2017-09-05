@@ -9,7 +9,7 @@
 {{ $active := where $incidents "Params.resolved" "!=" true }}
 {{ $major := where $active "Params.severity" "major-outage" }}
 
-<html>
+<html lang="{{.Site.LanguageCode}}">
   <head>
     <title>{{ $title }}</title>
     <link rel="stylesheet" href="/css/main.css"/>
@@ -24,8 +24,10 @@
   <body>
     <div class="gangsta-wrap">
       <div class="header">
-        <img src="{{ $logo }}" class="logo"/>
-        <span class="title"><a href="/">{{ $title }}</a></span>
+        <div>
+          <img src="{{ $logo }}" alt="logo" class="logo"/>
+          <span class="title"><a href="/">{{ $title }}</a></span>
+        </div>
         <div class="right-links">
           {{ with $resources }}
             <a href="{{ . }}" class="button resources-link">Resources</a>

@@ -2,11 +2,11 @@
 
 <div class="incidents">
 {{ range (.Paginate .Data.Pages.ByPublishDate 15 ).Pages }}
-<div class="incident-summary">
+<div class="incident-summary flex-out">
   <a href="{{ .Permalink }}" class="article article-title">
     {{ .Title }}
   </a>
-  <span class="article-date">
+  <span class="article-date mute">
     {{ dateFormat "02 Jan 2006 15:04 MST" .Date }}
   </span>
 </div>

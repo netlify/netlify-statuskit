@@ -6,7 +6,7 @@
 {{ partial "systems" (dict "content" . "incidents" $active) }}
 
 {{ with $active }}
-  <div class="section-title">Active Incidents</div>
+  <div class="section-title mute">Active Incidents</div>
   {{ range $active }}
     {{ partial "incident" . }}
   {{ end }}
