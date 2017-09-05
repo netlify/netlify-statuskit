@@ -8,7 +8,7 @@
   <div class="incident-description">
     {{- .Content -}}
   </div>
-  <div class="incident-status">
+  <div class="incident-status flex-out">
     <p class="color-{{ $alert }}">
       {{- index .Site.Data.severity.descriptions $severity -}}
     </p>
