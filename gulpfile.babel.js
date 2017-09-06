@@ -63,7 +63,14 @@ gulp.task("new-incident", (cb) => {
     type: "input",
     name: "name",
     message: "What is the cause of the incident?",
-    filter: ((name) => kebabCase(name) + ".md")
+    filter: ((name) => kebabCase(name)),
+    validate: (value) => {
+      if (value.length > 0) {
+          return true;
+      }
+
+      return "You must have a cause title!";
+    }
   }, {
     type: "list",
     name: "severity",
@@ -73,11 +80,22 @@ gulp.task("new-incident", (cb) => {
     type: "checkbox",
     name: "affected",
     message: "What are the affected systems?",
-    choices: config.params.systems
+    choices: config.params.systems,
+    validate: (value) => {
+      if (value.length > 0) {
+          return true;
+      }
+
+      return "You must have an affected system?!";
+    }
+  }, {
+    type: "input",
+    name: "description",
+    message: "Add a terse description of the incident"
   }, {
     type: "confirm",
     name: "open",
-    message: "Open incident for editing?",
+    message: "Open the incident for editing?",
     default: false
   }];
 
