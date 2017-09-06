@@ -10,6 +10,7 @@ import webpackConfig from "./webpack.conf";
 import inquirer from "inquirer";
 import toml from "tomljs";
 import fs from "fs";
+import kebabCase from "lodash.kebabcase";
 
 const browserSync = BrowserSync.create();
 const hugoBin = `./bin/hugo_0.26_${process.platform}_amd64${process.platform === "windows" ? ".exe" : ""}`;
@@ -61,7 +62,10 @@ gulp.task("new-incident", (cb) => {
   {
     type: 'input',
     name: 'name',
-    message: 'What is the cause of the incident?'
+    message: 'What is the cause of the incident?',
+    filter: (name => {
+        return kebabCase(name) + '.md';
+    })
   }, {
     type: 'list',
     name: 'severity',
@@ -88,6 +92,7 @@ gulp.task("new-incident", (cb) => {
 function buildSite(cb, options) {
   const args = options ? defaultArgs.concat(options) : defaultArgs;
 
+  // cp needs to be in site directory
   return cp.spawn(hugoBin, args, {stdio: "inherit"}).on("close", (code) => {
     if (code === 0) {
       browserSync.reload();

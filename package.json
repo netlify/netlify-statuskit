@@ -35,6 +35,7 @@
     "gulp-util": "^3.0.7",
     "imports-loader": "^0.6.5",
     "inquirer": "^3.2.3",
+    "lodash.kebabcase": "^4.1.1",
     "postcss-cssnext": "^2.7.0",
     "postcss-import": "^8.1.2",
     "postcss-loader": "^0.9.1",
