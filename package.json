@@ -10,6 +10,7 @@
     "build-preview": "gulp build-preview",
     "start": "gulp server",
     "lint": "eslint src, gulpfile.babel.js, webpack.conf.js",
+    "new-incident": "gulp new-incident"
   },
   "author": "",
   "license": "MIT",
