@@ -15,6 +15,7 @@ import kebabCase from "lodash.kebabcase";
 const browserSync = BrowserSync.create();
 const hugoBin = `./bin/hugo_0.26_${process.platform}_amd64${process.platform === "windows" ? ".exe" : ""}`;
 const defaultArgs = ["-d", "../dist", "-s", "site", "-v"];
+const newIncidentArgs = ["new", "incidents"];
 
 gulp.task("hugo", (cb) => buildSite(cb));
 gulp.task("hugo-preview", (cb) => buildSite(cb, ["--buildDrafts", "--buildFuture"]));
@@ -55,31 +56,28 @@ gulp.task("server", ["hugo", "css", "js"], () => {
 });
 
 gulp.task("new-incident", (cb) => {
-  const file = fs.readFileSync('site/config.toml').toString();
+  const file = fs.readFileSync("site/config.toml").toString();
   const config = toml(file);
 
-  const questions = [
-  {
-    type: 'input',
-    name: 'name',
-    message: 'What is the cause of the incident?',
-    filter: (name => {
-        return kebabCase(name) + '.md';
-    })
+  const questions = [{
+    type: "input",
+    name: "name",
+    message: "What is the cause of the incident?",
+    filter: ((name) => kebabCase(name) + ".md")
   }, {
-    type: 'list',
-    name: 'severity',
-    message: 'What is the severity of the incident?',
-    choices: ['under-maintenance', 'degraded-performance', 'partial-outage', 'major-outage']
+    type: "list",
+    name: "severity",
+    message: "What is the severity of the incident?",
+    choices: ["under-maintenance", "degraded-performance", "partial-outage", "major-outage"]
   }, {
-    type: 'checkbox',
-    name: 'affected',
-    message: 'What are the affected systems?',
+    type: "checkbox",
+    name: "affected",
+    message: "What are the affected systems?",
     choices: config.params.systems
   }, {
-    type: 'confirm',
-    name: 'open',
-    message: 'Open incident for editing?',
+    type: "confirm",
+    name: "open",
+    message: "Open incident for editing?",
     default: false
   }];
 
@@ -87,7 +85,7 @@ gulp.task("new-incident", (cb) => {
 
       cb();
   });
-})
+});
 
 function buildSite(cb, options) {
   const args = options ? defaultArgs.concat(options) : defaultArgs;
