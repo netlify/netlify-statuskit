@@ -12,6 +12,7 @@ import toml from "tomljs";
 import fs from "fs";
 import path from "path";
 import kebabCase from "lodash.kebabcase";
+import tomlify from "tomlify-j0.4";
 
 const browserSync = BrowserSync.create();
 const hugoBin = `./bin/hugo_0.26_${process.platform}_amd64${process.platform === "windows" ? ".exe" : ""}`;
@@ -156,6 +157,13 @@ gulp.task("new-incident", (cb) => {
     });
   });
 });
+
+function generateFrontMatter(frontMatter, answers) {
+    return `+++
+${tomlify(frontMatter, null, 2)}
++++
+${answers.description}`;
+}
 
 function buildSite(cb, options) {
   let args = options ? defaultArgs.concat(options) : defaultArgs;
