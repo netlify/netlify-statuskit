@@ -10,6 +10,7 @@ import webpackConfig from "./webpack.conf";
 import inquirer from "inquirer";
 import toml from "tomljs";
 import fs from "fs";
+import path from "path";
 import kebabCase from "lodash.kebabcase";
 
 const browserSync = BrowserSync.create();
@@ -99,9 +100,60 @@ gulp.task("new-incident", (cb) => {
     default: false
   }];
 
-  inquirer.prompt(questions).then(_ => {
+  inquirer.prompt(questions).then((answers) => {
+    let args = ["new", `incidents${path.sep}${answers.name}.md`];
+    args = args.concat(defaultArgs);
 
-      cb();
+    let hugo = cp.spawn(hugoBin, args, { stdio: "pipe" });
+    hugo.stdout.on("data", (data) => {
+      const message = data.toString();
+
+      if (message.indexOf(" created") === -1) {
+        return;
+      }
+
+      const path = message.split(" ")[0];
+
+      const incident = fs.readFileSync(path).toString();
+      const frontMatter = toml(incident);
+
+      frontMatter.severity = answers.severity;
+      frontMatter.affectedsystems = answers.affected;
+
+      const content = generateFrontMatter(frontMatter, answers);
+
+      fs.writeFileSync(path, content);
+
+      if (!answers.open) {
+        return;
+      }
+      let cmd = "xdg-open";
+      switch (process.platform) {
+        case "darwin": {
+          cmd = "open";
+          break;
+        };
+        case "win32":
+        case "win64": {
+          cmd = "start";
+          break;
+        };
+        default: {
+          cmd = "xdg-open";
+          break;
+        };
+      }
+
+      cp.exec(`${cmd} ${path}`);
+    });
+
+    hugo.on("close", (code) => {
+      if (code === 0) {
+        cb();
+      } else {
+        cb("new incident creation failed");
+      }
+    });
   });
 });
 
