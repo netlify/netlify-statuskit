@@ -7,6 +7,7 @@ import cssnext from "postcss-cssnext";
 import BrowserSync from "browser-sync";
 import webpack from "webpack";
 import webpackConfig from "./webpack.conf";
+import inquirer from "inquirer";
 
 const browserSync = BrowserSync.create();
 const hugoBin = `./bin/hugo_0.26_${process.platform}_amd64${process.platform === "windows" ? ".exe" : ""}`;
@@ -49,6 +50,35 @@ gulp.task("server", ["hugo", "css", "js"], () => {
   gulp.watch("./src/css/**/*.css", ["css"]);
   gulp.watch("./site/**/*", ["hugo"]);
 });
+
+gulp.task("new-incident", (cb) => {
+
+  const questions = [
+  {
+    type: 'input',
+    name: 'name',
+    message: 'What is the cause of the incident?'
+  }, {
+    type: 'list',
+    name: 'severity',
+    message: 'What is the severity of the incident?',
+    choices: ['under-maintenance', 'degraded-performance', 'partial-outage', 'major-outage']
+  }, {
+    type: 'checkbox',
+    name: 'affected',
+    message: 'What are the affected systems?',
+  }, {
+    type: 'confirm',
+    name: 'open',
+    message: 'Open incident for editing?',
+    default: false
+  }];
+
+  inquirer.prompt(questions).then(_ => {
+
+      cb();
+  });
+})
 
 function buildSite(cb, options) {
   const args = options ? defaultArgs.concat(options) : defaultArgs;
