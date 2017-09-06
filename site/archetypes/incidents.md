@@ -4,7 +4,7 @@
 title = "{{ replace .TranslationBaseName "-" " " | title }}"
 date = {{ .Date }}
 
-# severity: represents the impact of 
+# severity: represents the impact of
 # your system due to the current incident.
 # This is the list of supported severities:
 #
@@ -18,9 +18,9 @@ severity = "degraded-performance"
 # affectedsystems: is a list of systems affected
 # by the incident.
 # Example:
-# affectedsystems = ["API", "Build servers"]
+# affectedsystems = ["API", "CDN"]
 #
-affectedsystems = ["API", "Build servers"]
+affectedsystems = ["API", "CDN"]
 
 # resolved: marks an incident as resolved.
 # It can be either true or false.
