@@ -8,6 +8,8 @@ import BrowserSync from "browser-sync";
 import webpack from "webpack";
 import webpackConfig from "./webpack.conf";
 import inquirer from "inquirer";
+import toml from "tomljs";
+import fs from "fs";
 
 const browserSync = BrowserSync.create();
 const hugoBin = `./bin/hugo_0.26_${process.platform}_amd64${process.platform === "windows" ? ".exe" : ""}`;
@@ -52,6 +54,8 @@ gulp.task("server", ["hugo", "css", "js"], () => {
 });
 
 gulp.task("new-incident", (cb) => {
+  const file = fs.readFileSync('site/config.toml').toString();
+  const config = toml(file);
 
   const questions = [
   {
@@ -67,6 +71,7 @@ gulp.task("new-incident", (cb) => {
     type: 'checkbox',
     name: 'affected',
     message: 'What are the affected systems?',
+    choices: config.params.systems
   }, {
     type: 'confirm',
     name: 'open',
