@@ -9,7 +9,7 @@
     "build": "gulp build",
     "build-preview": "gulp build-preview",
     "start": "gulp server",
-    "lint": "eslint src, gulpfile.babel.js, webpack.conf.js"
+    "lint": "eslint src, gulpfile.babel.js, webpack.conf.js",
   },
   "author": "",
   "license": "MIT",
