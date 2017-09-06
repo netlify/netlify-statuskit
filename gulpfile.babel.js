@@ -14,8 +14,8 @@ import kebabCase from "lodash.kebabcase";
 
 const browserSync = BrowserSync.create();
 const hugoBin = `./bin/hugo_0.26_${process.platform}_amd64${process.platform === "windows" ? ".exe" : ""}`;
-const defaultArgs = ["-d", "../dist", "-s", "site", "-v"];
-const newIncidentArgs = ["new", "incidents"];
+const defaultArgs = ["-s", "site", "-v"];
+const buildArgs = ["-d", "../dist"];
 
 gulp.task("hugo", (cb) => buildSite(cb));
 gulp.task("hugo-preview", (cb) => buildSite(cb, ["--buildDrafts", "--buildFuture"]));
@@ -88,7 +88,8 @@ gulp.task("new-incident", (cb) => {
 });
 
 function buildSite(cb, options) {
-  const args = options ? defaultArgs.concat(options) : defaultArgs;
+  let args = options ? defaultArgs.concat(options) : defaultArgs;
+  args = args.concat(buildArgs);
 
   // cp needs to be in site directory
   return cp.spawn(hugoBin, args, {stdio: "inherit"}).on("close", (code) => {
