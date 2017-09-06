@@ -68,7 +68,7 @@ gulp.task("new-incident", (cb) => {
     filter: ((name) => kebabCase(name)),
     validate: (value) => {
       if (value.length > 0) {
-          return true;
+        return true;
       }
 
       return "You must have a cause title!";
@@ -85,7 +85,7 @@ gulp.task("new-incident", (cb) => {
     choices: config.params.systems,
     validate: (value) => {
       if (value.length > 0) {
-          return true;
+        return true;
       }
 
       return "You must have an affected system?!";
@@ -105,7 +105,7 @@ gulp.task("new-incident", (cb) => {
     let args = ["new", `incidents${path.sep}${answers.name}.md`];
     args = args.concat(defaultArgs);
 
-    let hugo = cp.spawn(hugoBin, args, { stdio: "pipe" });
+    const hugo = cp.spawn(hugoBin, args, {stdio: "pipe"});
     hugo.stdout.on("data", (data) => {
       const message = data.toString();
 
@@ -128,21 +128,22 @@ gulp.task("new-incident", (cb) => {
       if (!answers.open) {
         return;
       }
+
       let cmd = "xdg-open";
       switch (process.platform) {
         case "darwin": {
           cmd = "open";
           break;
-        };
+        }
         case "win32":
         case "win64": {
           cmd = "start";
           break;
-        };
+        }
         default: {
           cmd = "xdg-open";
           break;
-        };
+        }
       }
 
       cp.exec(`${cmd} ${path}`);
@@ -159,7 +160,7 @@ gulp.task("new-incident", (cb) => {
 });
 
 function generateFrontMatter(frontMatter, answers) {
-    return `+++
+  return `+++
 ${tomlify(frontMatter, null, 2)}
 +++
 ${answers.description}`;
