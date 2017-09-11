@@ -65,7 +65,6 @@ gulp.task("new-incident", (cb) => {
     type: "input",
     name: "name",
     message: "What is the cause of the incident?",
-    filter: ((name) => kebabCase(name)),
     validate: (value) => {
       if (value.length > 0) {
         return true;
@@ -102,7 +101,7 @@ gulp.task("new-incident", (cb) => {
   }];
 
   inquirer.prompt(questions).then((answers) => {
-    let args = ["new", `incidents${path.sep}${answers.name}.md`];
+    let args = ["new", `incidents${path.sep}${kebabCase(answers.name)}.md`];
     args = args.concat(defaultArgs);
 
     const hugo = cp.spawn(hugoBin, args, {stdio: "pipe"});
@@ -120,6 +119,7 @@ gulp.task("new-incident", (cb) => {
 
       frontMatter.severity = answers.severity;
       frontMatter.affectedsystems = answers.affected;
+      frontMatter.title = answers.name.replace(/-/g, " ");
 
       const content = generateFrontMatter(frontMatter, answers);
 
