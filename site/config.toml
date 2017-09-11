@@ -12,4 +12,5 @@ title = "StatusKit"
 # List of systems monitored in this status page.
 # You'll be able to change their status every time
 # you open or update an incident.
+# Replace these examples with your own system names.
 systems = ["API", "CDN", "DNS", "Site delivery"]
