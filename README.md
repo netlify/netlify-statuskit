@@ -44,7 +44,7 @@ Adding incidents to your status page is as simple as adding a new document to th
 Create a new incident using npm:
 
 ```
-npm run new-incidents
+npm run new-incident
 ```
 
 Hugo will create a new Markdown file for you with title and date based on the file name and a few predefined settings in the header. To learn more about the different severities and report, you can see more detailed examples in `site/archetypes/incidents.md`.
