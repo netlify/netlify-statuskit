@@ -7,10 +7,17 @@ import cssnext from "postcss-cssnext";
 import BrowserSync from "browser-sync";
 import webpack from "webpack";
 import webpackConfig from "./webpack.conf";
+import inquirer from "inquirer";
+import toml from "tomljs";
+import fs from "fs";
+import path from "path";
+import kebabCase from "lodash.kebabcase";
+import tomlify from "tomlify-j0.4";
 
 const browserSync = BrowserSync.create();
 const hugoBin = `./bin/hugo_0.26_${process.platform}_amd64${process.platform === "windows" ? ".exe" : ""}`;
-const defaultArgs = ["-d", "../dist", "-s", "site", "-v"];
+const defaultArgs = ["-s", "site", "-v"];
+const buildArgs = ["-d", "../dist"];
 
 gulp.task("hugo", (cb) => buildSite(cb));
 gulp.task("hugo-preview", (cb) => buildSite(cb, ["--buildDrafts", "--buildFuture"]));
@@ -50,9 +57,120 @@ gulp.task("server", ["hugo", "css", "js"], () => {
   gulp.watch("./site/**/*", ["hugo"]);
 });
 
-function buildSite(cb, options) {
-  const args = options ? defaultArgs.concat(options) : defaultArgs;
+gulp.task("new-incident", (cb) => {
+  const file = fs.readFileSync("site/config.toml").toString();
+  const config = toml(file);
 
+  const questions = [{
+    type: "input",
+    name: "name",
+    message: "What is the cause of the incident?",
+    validate: (value) => {
+      if (value.length > 0) {
+        return true;
+      }
+
+      return "You must have a cause title!";
+    }
+  }, {
+    type: "list",
+    name: "severity",
+    message: "What is the severity of the incident?",
+    choices: ["under-maintenance", "degraded-performance", "partial-outage", "major-outage"]
+  }, {
+    type: "checkbox",
+    name: "affected",
+    message: "What are the affected systems?",
+    choices: config.params.systems,
+    validate: (value) => {
+      if (value.length > 0) {
+        return true;
+      }
+
+      return "You must have an affected system?!";
+    }
+  }, {
+    type: "input",
+    name: "description",
+    message: "Add a terse description of the incident"
+  }, {
+    type: "confirm",
+    name: "open",
+    message: "Open the incident for editing?",
+    default: false
+  }];
+
+  inquirer.prompt(questions).then((answers) => {
+    let args = ["new", `incidents${path.sep}${kebabCase(answers.name)}.md`];
+    args = args.concat(defaultArgs);
+
+    const hugo = cp.spawn(hugoBin, args, {stdio: "pipe"});
+    hugo.stdout.on("data", (data) => {
+      const message = data.toString();
+
+      if (message.indexOf(" created") === -1) {
+        return;
+      }
+
+      const path = message.split(" ")[0];
+
+      const incident = fs.readFileSync(path).toString();
+      const frontMatter = toml(incident);
+
+      frontMatter.severity = answers.severity;
+      frontMatter.affectedsystems = answers.affected;
+      frontMatter.title = answers.name.replace(/-/g, " ");
+
+      const content = generateFrontMatter(frontMatter, answers);
+
+      fs.writeFileSync(path, content);
+
+      if (!answers.open) {
+        return;
+      }
+
+      let cmd = "xdg-open";
+      switch (process.platform) {
+        case "darwin": {
+          cmd = "open";
+          break;
+        }
+        case "win32":
+        case "win64": {
+          cmd = "start";
+          break;
+        }
+        default: {
+          cmd = "xdg-open";
+          break;
+        }
+      }
+
+      cp.exec(`${cmd} ${path}`);
+    });
+
+    hugo.on("close", (code) => {
+      if (code === 0) {
+        cb();
+      } else {
+        cb("new incident creation failed");
+      }
+    });
+  });
+});
+
+function generateFrontMatter(frontMatter, answers) {
+  return `+++
+${tomlify(frontMatter, null, 2)}
++++
+${answers.description}`;
+}
+
+function buildSite(cb, options) {
+  let args = options ? defaultArgs.concat(options) : defaultArgs;
+  args = args.concat(buildArgs);
+
+  // cp needs to be in site directory
   return cp.spawn(hugoBin, args, {stdio: "inherit"}).on("close", (code) => {
     if (code === 0) {
       browserSync.reload();

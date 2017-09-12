@@ -9,7 +9,8 @@
     "build": "gulp build",
     "build-preview": "gulp build-preview",
     "start": "gulp server",
-    "lint": "eslint src"
+    "lint": "eslint src gulpfile.babel.js webpack.conf.js",
+    "new-incident": "gulp new-incident"
   },
   "author": "",
   "license": "MIT",
@@ -34,9 +35,13 @@
     "gulp-postcss": "^6.1.1",
     "gulp-util": "^3.0.7",
     "imports-loader": "^0.6.5",
+    "inquirer": "^3.2.3",
+    "lodash.kebabcase": "^4.1.1",
     "postcss-cssnext": "^2.7.0",
     "postcss-import": "^8.1.2",
     "postcss-loader": "^0.9.1",
+    "tomlify-j0.4": "^2.2.0",
+    "tomljs": "^0.1.3",
     "url-loader": "^0.5.7",
     "webpack": "^1.13.1",
     "whatwg-fetch": "^1.0.0"
