@@ -15,7 +15,8 @@ import kebabCase from "lodash.kebabcase";
 import tomlify from "tomlify-j0.4";
 
 const browserSync = BrowserSync.create();
-const hugoBin = `./bin/hugo_0.26_${process.platform}_amd64${process.platform === "windows" ? ".exe" : ""}`;
+const platform = getPlatform(process.platform);
+const hugoBin = `./bin/hugo_0.26_${platform}_amd64${platform === "windows" ? ".exe" : ""}`;
 const defaultArgs = ["-s", "site", "-v"];
 const buildArgs = ["-d", "../dist"];
 
@@ -130,13 +131,12 @@ gulp.task("new-incident", (cb) => {
       }
 
       let cmd = "xdg-open";
-      switch (process.platform) {
+      switch (platform) {
         case "darwin": {
           cmd = "open";
           break;
         }
-        case "win32":
-        case "win64": {
+        case "windows": {
           cmd = "start";
           break;
         }
@@ -158,6 +158,18 @@ gulp.task("new-incident", (cb) => {
     });
   });
 });
+
+function getPlatform(platform) {
+    switch (platform) {
+      case "win32":
+      case "win64": {
+        return "windows";
+      }
+      default: {
+        return platform
+      }
+    }
+}
 
 function generateFrontMatter(frontMatter, answers) {
   return `+++
