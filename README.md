@@ -47,7 +47,7 @@ Create a new incident using npm:
 npm run new-incident
 ```
 
-Hugo will create a new Markdown file for you with title and date based on the file name and a few predefined settings in the header. To learn more about the different severities and report, you can see more detailed examples in `site/archetypes/incidents.md`.
+You'll be asked a series of questions about the incident, then Hugo will generate a new file pre-filled with your responses.
 
 After explaining the current situation in the incident, you can just push the file to GitHub. Netlify will deploy the indicent announcement for you in a matter of seconds.
 
