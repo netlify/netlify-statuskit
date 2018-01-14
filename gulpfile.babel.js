@@ -160,15 +160,15 @@ gulp.task("new-incident", (cb) => {
 });
 
 function getPlatform(platform) {
-    switch (platform) {
-      case "win32":
-      case "win64": {
-        return "windows";
-      }
-      default: {
-        return platform
-      }
+  switch (platform) {
+    case "win32":
+    case "win64": {
+      return "windows";
     }
+    default: {
+      return platform;
+    }
+  }
 }
 
 function generateFrontMatter(frontMatter, answers) {
