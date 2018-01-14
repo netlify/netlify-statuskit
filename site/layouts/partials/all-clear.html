@@ -2,7 +2,7 @@
   <img src="/images/icon-large-ok.svg" />
   {{ with .Date }}
     {{ $latestDate := dateFormat "2006-01-02T15:04:05" .}}
-    <p id="days-since-latest" data-latest-incident-date="{{ $latestDate }}">48+ days since last incident</p>
+    <p id="days-since-latest" data-latest-incident-date="{{ $latestDate }}">Last incident: {{ .Format "02 Jan 2006 15:04 MST" }}</p>
   {{ else }}
     <p>No incidents so far, all is good</p>
   {{ end }}
