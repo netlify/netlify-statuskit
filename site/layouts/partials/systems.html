@@ -1,7 +1,7 @@
 {{ $okAlert := index .content.Site.Data.severity.alerts "ok"}}
 {{ $okDesc := index .content.Site.Data.severity.descriptions "ok" }}
 
-{{ with .content.Site.Params.systems }}
+{{ with .content.Site.Data.systems }}
 <div class="systems">
   {{ range . }}
   {{ $name := . }}

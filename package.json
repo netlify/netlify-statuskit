@@ -6,7 +6,7 @@
   "scripts": {
     "hugo": "gulp hugo",
     "webpack": "gulp webpack",
-    "build": "gulp build",
+    "build": "bin/fetch-issues && gulp build",
     "build-preview": "gulp build-preview",
     "start": "gulp server",
     "lint": "eslint src gulpfile.babel.js webpack.conf.js",

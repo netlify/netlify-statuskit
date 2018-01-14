@@ -1,0 +1,50 @@
+#!/usr/bin/env python
+
+import codecs
+import json
+import os
+import requests
+
+REPO = os.getenv('REPOSITORY_URL').replace('https://github.com/', '').replace('git@github.com:', '')
+TOKEN = os.getenv('GITHUB_TOKEN')
+OUT_DIR = 'site/content/incidents/'
+
+def get(url, params=''):
+    return requests.get('https://api.github.com/repos/%s%s?access_token=%s%s' % (REPO, url, TOKEN, params)).json()
+
+
+# System labels
+labels = get('/labels')
+systems = [l['name'] for l in labels if l['color'] == 'ffffff']
+with open('site/data/systems.json', 'w') as fp:
+    json.dump(systems, fp)
+
+
+# Incident issues
+issues = get('/issues', '&state=all')
+for issue in issues:
+    systems = []
+    for label in issue['labels']:
+        if label['color'] == 'ffffff':
+            systems.append(label['name'])
+        else:
+            severity = label['name'].lower().replace(' ', '-').replace('z-', '')
+    #closed_at = issue['closed_at']
+    #updated_at = issue['updated_at']
+
+    if not systems:
+        continue
+
+    comments = get('/issues/%d/comments' % issue['number'])
+    for comment in comments:
+        issue['body'] += '\n\n**Update**: ' + comment['body'] + ' {{< track "' + comment['created_at'] + '" >}}\n'
+
+    with codecs.open('%s%d.md' % (OUT_DIR, issue['number']), 'w', 'utf-8') as fp:
+        fp.write('---\n')
+        fp.write('date: %s\n' % issue['created_at'])
+        fp.write('severity: %s\n' % severity)
+        fp.write('resolved: %s\n' % ('true' if issue['state'] == 'closed' else 'false'))
+        fp.write('title: %s\n' % issue['title'])
+        fp.write('affectedsystems: [ %s ]\n' % ', '.join(systems))
+        fp.write('---\n')
+        fp.write(issue['body'])
