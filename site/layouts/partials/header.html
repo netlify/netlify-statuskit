@@ -1,4 +1,5 @@
 <!doctype html>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 {{ $logo := getenv "STATUSKIT_COMPANY_LOGO" | default .Site.Params.defaultLogo }}
 {{ $title := getenv "STATUSKIT_PAGE_TITLE" | default .Site.Title }}
 {{ $resources := getenv "STATUSKIT_RESOURCES_LINK" | default .Site.Params.resourcesLink }}
