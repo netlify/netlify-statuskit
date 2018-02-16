@@ -1,5 +1,4 @@
 <!doctype html>
-<meta name="viewport" content="width=device-width, initial-scale=1">
 {{ $logo := getenv "STATUSKIT_COMPANY_LOGO" | default .Site.Params.defaultLogo }}
 {{ $title := getenv "STATUSKIT_PAGE_TITLE" | default .Site.Title }}
 {{ $resources := getenv "STATUSKIT_RESOURCES_LINK" | default .Site.Params.resourcesLink }}
@@ -13,6 +12,7 @@
 <html lang="{{.Site.LanguageCode}}">
   <head>
     <title>{{ $title }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/css/main.css"/>
     {{ if $major }}
       <link rel="icon" href="{{ absURL $favicons }}favicon-danger.ico">
