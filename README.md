@@ -9,6 +9,14 @@ Please make sure you understand its [implications and guarantees](https://writin
 
 [![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/netlify/netlify-statuskit)
 
+## Project Status
+
+This project is no longer being maintained by netlify staff. This is a community led project and if you are looking to support this project, please get in touch via an issue.
+
+### Netlify's Statement
+
+> [Netlify] doesn't currently have the staff to process such contributions.
+
 ## Initial configuration
 
 Click in the Deploy to Netlify button above to create your own site directly and push this repository to your own account.
