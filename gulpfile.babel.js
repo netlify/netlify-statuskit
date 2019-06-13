@@ -1,64 +1,89 @@
-import gulp from "gulp";
-import cp from "child_process";
-import gutil from "gulp-util";
-import postcss from "gulp-postcss";
-import cssImport from "postcss-import";
-import cssnext from "postcss-cssnext";
+import babel from "gulp-babel";
 import BrowserSync from "browser-sync";
-import webpack from "webpack";
-import webpackConfig from "./webpack.conf";
-import inquirer from "inquirer";
-import toml from "tomljs";
+import cp from "child_process";
+import cssImport from "postcss-import";
+import cssnext from "postcss-preset-env";
+import del from "del";
 import fs from "fs";
-import path from "path";
+import gulp from "gulp";
+import inquirer from "inquirer";
 import kebabCase from "lodash.kebabcase";
+import path from "path";
+import postcss from "gulp-postcss";
+import toml from "tomljs";
 import tomlify from "tomlify-j0.4";
 
 const browserSync = BrowserSync.create();
 const platform = getPlatform(process.platform);
-const hugoBin = `./bin/hugo_0.26_${platform}_amd64${platform === "windows" ? ".exe" : ""}`;
+const hugoBin = `./bin/hugo_0.55.6_${platform}_amd64${platform === "windows" ? ".exe" : ""}`;
 const defaultArgs = ["-s", "site", "-v"];
 const buildArgs = ["-d", "../dist"];
 
-gulp.task("hugo", (cb) => buildSite(cb));
-gulp.task("hugo-preview", (cb) => buildSite(cb, ["--buildDrafts", "--buildFuture"]));
+function getPlatform(platform) {
+  switch (platform) {
+    case "win32":
+    case "win64": {
+      return "windows";
+    }
+    default: {
+      return platform;
+    }
+  }
+}
 
-gulp.task("build", ["css", "js", "hugo"]);
-gulp.task("build-preview", ["css", "js", "hugo-preview"]);
+function generateFrontMatter(frontMatter, answers) {
+  return `+++
+${tomlify.toToml(frontMatter, null, 2)}
++++
+${answers.description}`;
+}
 
-gulp.task("css", () => (
-  gulp.src("./src/css/*.css")
-    .pipe(postcss([cssnext(), cssImport({from: "./src/css/main.css"})]))
-    .pipe(gulp.dest("./dist/css"))
-    .pipe(browserSync.stream())
-));
-
-gulp.task("js", (cb) => {
-  const myConfig = Object.assign({}, webpackConfig);
-
-  webpack(myConfig, (err, stats) => {
-    if (err) throw new gutil.PluginError("webpack", err);
-    gutil.log("[webpack]", stats.toString({
-      colors: true,
-      progress: true
-    }));
-    browserSync.reload();
-    cb();
+const hugo = (done, options) => {
+  cp.spawn(hugoBin, ["version"], {
+    stdio: "inherit"
   });
-});
 
-gulp.task("server", ["hugo", "css", "js"], () => {
+  let args = options ? defaultArgs.concat(options) : defaultArgs;
+  args = args.concat(buildArgs);
+
+  // cp needs to be in site directory
+  cp.spawn(hugoBin, args, {
+    stdio: "inherit"
+  }).on("close", (code) => {
+    if (code === 0) {
+      browserSync.reload();
+      done();
+    } else {
+      browserSync.notify("Hugo build failed :(");
+      done("Hugo build failed");
+    }
+  });
+
+  return done;
+};
+
+export const css = () => gulp.src("./src/css/**/*.css")
+  .pipe(postcss([cssnext(), cssImport({
+    from: "./src/css/main.css"
+  })]))
+  .pipe(gulp.dest("./dist/css"));
+
+export const js = () => gulp.src("./src/js/*.js")
+  .pipe(babel())
+  .pipe(gulp.dest("./dist/js"));
+
+export const server = gulp.series(gulp.parallel(css, js), hugo, () => {
   browserSync.init({
     server: {
       baseDir: "./dist"
     }
   });
-  gulp.watch("./src/js/**/*.js", ["js"]);
-  gulp.watch("./src/css/**/*.css", ["css"]);
-  gulp.watch("./site/**/*", ["hugo"]);
+  gulp.watch("./src/js/**/*.js", js);
+  gulp.watch("./src/css/**/*.css", css);
+  gulp.watch("./site/**/*", hugo);
 });
 
-gulp.task("new-incident", (cb) => {
+export const newIncident = (done) => {
   const file = fs.readFileSync("site/config.toml").toString();
   const config = toml(file);
 
@@ -105,7 +130,9 @@ gulp.task("new-incident", (cb) => {
     let args = ["new", `incidents${path.sep}${kebabCase(answers.name)}.md`];
     args = args.concat(defaultArgs);
 
-    const hugo = cp.spawn(hugoBin, args, {stdio: "pipe"});
+    const hugo = cp.spawn(hugoBin, args, {
+      stdio: "pipe"
+    });
     hugo.stdout.on("data", (data) => {
       const message = data.toString();
 
@@ -151,45 +178,16 @@ gulp.task("new-incident", (cb) => {
 
     hugo.on("close", (code) => {
       if (code === 0) {
-        cb();
+        done();
       } else {
-        cb("new incident creation failed");
+        done("new incident creation failed");
       }
     });
   });
-});
+};
 
-function getPlatform(platform) {
-  switch (platform) {
-    case "win32":
-    case "win64": {
-      return "windows";
-    }
-    default: {
-      return platform;
-    }
-  }
-}
-
-function generateFrontMatter(frontMatter, answers) {
-  return `+++
-${tomlify(frontMatter, null, 2)}
-+++
-${answers.description}`;
-}
-
-function buildSite(cb, options) {
-  let args = options ? defaultArgs.concat(options) : defaultArgs;
-  args = args.concat(buildArgs);
-
-  // cp needs to be in site directory
-  return cp.spawn(hugoBin, args, {stdio: "inherit"}).on("close", (code) => {
-    if (code === 0) {
-      browserSync.reload();
-      cb();
-    } else {
-      browserSync.notify("Hugo build failed :(");
-      cb("Hugo build failed");
-    }
-  });
-}
+export const clean = (done) => del(["dist"], done);
+export const hugoPreview = (done) => hugo(done, ["--buildDrafts", "--buildFuture"]);
+export const build = gulp.series(clean, gulp.parallel(css, js), hugo);
+export const buildPreview = gulp.series(clean, gulp.parallel(css, js), hugoPreview);
+export default hugo;
