@@ -9,15 +9,19 @@
     <div class="card">
       {{- $name -}}
       {{ if $.incidents }}
+        {{ $.content.Scratch.Set "max" 0 }}
         {{ range $.incidents }}
           {{ if in .Params.affectedsystems $name }}
-            {{ $alert := index .Site.Data.severity.alerts .Params.severity }}
-            {{ $desc := index .Site.Data.severity.descriptions .Params.severity  }}
-            {{ partial "status-badge" (dict "alert" $alert "description" $desc) }}
-          {{ else }}
-            {{ partial "status-badge" (dict "alert" $okAlert "description" $okDesc) }}
+            {{ $level := index .Site.Data.severity.levels_reverse .Params.severity }}
+            {{ if gt $level ($.content.Scratch.Get "max") }}
+              {{ $.content.Scratch.Set "max" $level }}
+            {{ end }}
           {{ end }}
         {{ end }}
+        {{ $severity := index $.content.Site.Data.severity.levels (string ($.content.Scratch.Get "max")) }}
+        {{ $alert := index $.content.Site.Data.severity.alerts $severity }}
+        {{ $desc := index $.content.Site.Data.severity.descriptions $severity  }}
+        {{ partial "status-badge" (dict "alert" $alert "description" $desc) }}
       {{ else }}
         {{ partial "status-badge" (dict "alert" $okAlert "description" $okDesc) }}
       {{ end }}

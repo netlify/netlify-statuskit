@@ -11,3 +11,17 @@
   degraded-performance = "warning"
   partial-outage = "warning"
   major-outage = "danger"
+
+[levels]
+  0 = "ok"
+  1 = "under-maintenance"
+  2 = "degraded-performance"
+  3 = "partial-outage"
+  4 = "major-outage"
+
+[levels_reverse]
+  ok = 0
+  under-maintenance = 1
+  degraded-performance = 2
+  partial-outage = 3
+  major-outage = 4
